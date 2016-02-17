@@ -1,0 +1,147 @@
+<html>
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<head></head>
+	<body>
+		<button class="btn btn-lg btn-outline"  data-toggle="modal" data-target="#myModal">Ingresar encuesta</button>
+
+		
+		<!-- Modal -->
+		<div id="myModal" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+
+		    <!-- Modal content-->
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title">Modal Header</h4>
+		      </div>
+		      <div class="modal-body">
+		      	<div class="bloque_pregunta activo">
+			      	<span>Pregunta</span>					
+			      	<input type="text" placeholder="pregunta" class="form-control preguntaF"><br><br>
+			      	<div class="respuesta">		      				      	
+			      		<span>Respuestas:</span><br>			      		
+					</div>			
+					<br>      				        
+			    </div>
+		      </div>		      
+		      <div class="modal-footer">
+		      	<i class="mas fa fa-plus-circle"></i>
+			    <button class="btn btnAgregar">Agregar</button>			    
+		      	<!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>		        		        -->
+		      </div>
+		      <button class="btn btn-primary terminar" style="float:right;float: right;box-shadow: 2px 2px 2px #3B3B3B;">Terminar</button>
+		    </div>
+
+		  </div>
+		</div>
+	</body>
+</html>
+<style>
+	.mas{
+		font-size: 28px;
+    	color: green;
+    	float: left;
+	}
+	.btnAgregar{
+		float: right !important;
+	}
+	hr{
+		border-top: 1px solid #9FB4F0 !important;
+	}
+	.respuesta{
+		width: 276px;
+    	margin-left: 100px;
+    	display: inline-block;
+    	border-top-width: 0px;
+	    border-left-width: 0px;
+	    border-right-width: 0px;
+	    border-bottom-color: black;
+	}
+	.borrar{
+		color: #BF3939;
+    	font-size: 22px;
+    	margin-left: 14px;
+	}
+	.preguntaF{
+		border-top-width: 0px;
+	    border-left-width: 0px;
+	    border-right-width: 0px;
+	    border-bottom-color: black;
+	}
+</style>
+<script>
+	$(document).ready(function(){
+		
+
+		$(".mas").click(function(){
+			var element_resp = $($(this).siblings())[3];
+			console.log(element_resp);
+
+			$("#resp").removeAttr("id");
+			$(".activo").append("<div style='margin:5px;'><input type='checkbox' name='vehicle' value='Bike'><input id='resp' type='text' class='respuesta form-control' placeholder='posible respuesta'><i class='borrar fa fa-minus-circle' onclick='borrar_elemento(this);'></i></div>");				
+			document.getElementById("resp").focus();		
+		});
+
+		$(".btnAgregar").click(function(){
+			var elementos_activo = $(".activo").find("input");
+			if(elementos_activo.length<3){
+				alert("Tienes que ingresar almenos 2 respuestas");
+			}else{
+				$(".bloque_pregunta").removeClass("activo");
+			var element = $($(this));
+			//$(".modal-body").append("sadasdasdasd");
+			$(".modal-body").append("<div class='bloque_pregunta activo'><hr/><i class='borrar fa fa-minus-circle' onclick='borrar_elemento(this);'></i><span>Pregunta</span><input type='text' placeholder='pregunta' class='form-control preguntaF'><br><br><div class='respuesta'><span>Respuestas:</span><br></div><br></div>");
+			}			
+		});
+
+	
+		$(".terminar").click(function(){
+			var json={};
+			var respuestas = {};
+			var json_completo={};
+			var element = $($(".modal-body").find(".bloque_pregunta"));
+			console.log(element);
+			for(var i=0;i<=(element.length)-1;i++){
+				json = {};
+				respuestas={};
+				var preguntas = $(element[i]).find("input");
+				for(var x=0;x<=(preguntas.length)-1;x++){					
+					if(x==0){
+						json["pregunta"]=preguntas[x].value;	
+					}else{
+						respuestas[x+""]=preguntas[x].value;
+					}									
+				}
+				json_completo[i]=json;
+				json_completo[i]["respuestas"]=respuestas;
+				console.log(json_completo);											
+			}
+
+		});
+
+		$('body').keydown(function (e){
+		    if(e.keyCode == 13){		        
+		        //if($("#myModal").data('bs.modal').isShown){
+				if($("input").is(":focus")){	
+					$(".mas").click();
+				}
+		    }
+		});
+
+		
+		
+	});
+
+function borrar_elemento(element){
+	console.log($(element).parent());
+	$(element).parent().remove();
+	// $(element).siblings()[0].remove();
+	// $(element).remove();
+		
+}
+
+</script>
