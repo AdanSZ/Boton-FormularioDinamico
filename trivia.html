@@ -24,13 +24,15 @@
 			      	<input type="text" placeholder="pregunta" class="form-control preguntaF"><br><br>
 			      	<div class="respuesta">		      				      	
 			      		<span>Respuestas:</span><br>			      		
-					</div>			
+					</div>
+					<input type='hidden' name='hidden'>			
 					<br>      				        
 			    </div>
 		      </div>		      
 		      <div class="modal-footer">
 		      	<i class="mas fa fa-plus-circle"></i>
-			    <button class="btn btnAgregar">Agregar</button>			    
+			    <button class="btn btnAgregar">Agregar</button>
+			    <button class="btn test">Test</button>			    
 		      	<!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>		        		        -->
 		      </div>
 		      <button class="btn btn-primary terminar" style="float:right;float: right;box-shadow: 2px 2px 2px #3B3B3B;">Terminar</button>
@@ -74,19 +76,18 @@
 	}
 </style>
 <script>
-	$(document).ready(function(){
-		
-
-		$(".mas").click(function(){
+	var numero = 0;
+	$(document).ready(function(){		
+		$(".mas").click(function(){			
 			var element_resp = $($(this).siblings())[3];
 			console.log(element_resp);
-
 			$("#resp").removeAttr("id");
-			$(".activo").append("<div style='margin:5px;'><input type='checkbox' name='vehicle' value='Bike'><input id='resp' type='text' class='respuesta form-control' placeholder='posible respuesta'><i class='borrar fa fa-minus-circle' onclick='borrar_elemento(this);'></i></div>");				
+			$(".activo").append("<div style='margin:5px;'><input onclick='radio_selected(this);' id='radio radio_activo' type='radio' name='"+numero+"' value='Bike'><input id='resp' type='text' class='respuesta form-control' placeholder='posible respuesta'><i class='borrar fa fa-minus-circle' onclick='borrar_elemento(this);'></i></div>");				
 			document.getElementById("resp").focus();		
 		});
 
 		$(".btnAgregar").click(function(){
+			numero++;
 			var elementos_activo = $(".activo").find("input");
 			if(elementos_activo.length<3){
 				alert("Tienes que ingresar almenos 2 respuestas");
@@ -94,11 +95,11 @@
 				$(".bloque_pregunta").removeClass("activo");
 			var element = $($(this));
 			//$(".modal-body").append("sadasdasdasd");
-			$(".modal-body").append("<div class='bloque_pregunta activo'><hr/><i class='borrar fa fa-minus-circle' onclick='borrar_elemento(this);'></i><span>Pregunta</span><input type='text' placeholder='pregunta' class='form-control preguntaF'><br><br><div class='respuesta'><span>Respuestas:</span><br></div><br></div>");
+			$(".modal-body").append("<div class='bloque_pregunta activo'><hr/><i class='borrar fa fa-minus-circle' onclick='borrar_elemento(this);'></i><span>Pregunta</span><input type='text' placeholder='pregunta' class='form-control preguntaF'><br><br><div class='respuesta'><span>Respuestas:</span><br></div><br><input type='hidden' name='hidden'></div>");
 			}			
 		});
 
-	
+		
 		$(".terminar").click(function(){
 			var json={};
 			var respuestas = {};
@@ -132,7 +133,10 @@
 		    }
 		});
 
-		
+		$(".test").click(function(){
+			var radio = $(".radio_activo");
+			console.log(radio);
+		});
 		
 	});
 
@@ -140,8 +144,11 @@ function borrar_elemento(element){
 	console.log($(element).parent());
 	$(element).parent().remove();
 	// $(element).siblings()[0].remove();
-	// $(element).remove();
-		
+	// $(element).remove();		
+}
+
+function radio_selected(e){
+	console.log(e);
 }
 
 </script>
