@@ -25,7 +25,7 @@
 			      	<div class="respuesta">		      				      	
 			      		<span>Respuestas:</span><br>			      		
 					</div>
-					<input type='hidden' name='hidden'>			
+					
 					<br>      				        
 			    </div>
 		      </div>		      
@@ -82,7 +82,7 @@
 			var element_resp = $($(this).siblings())[3];
 			console.log(element_resp);
 			$("#resp").removeAttr("id");
-			$(".activo").append("<div style='margin:5px;'><input onclick='radio_selected(this);' id='radio radio_activo' type='radio' name='"+numero+"' value='Bike'><input id='resp' type='text' class='respuesta form-control' placeholder='posible respuesta'><i class='borrar fa fa-minus-circle' onclick='borrar_elemento(this);'></i></div>");				
+			$(".activo").append("<div style='margin:5px;'><input onclick='radio_selected(this);' id='radio radio_activo' type='radio' name='"+numero+"' value='correcto'><input id='resp' type='text' class='respuesta form-control' placeholder='posible respuesta'><i class='borrar fa fa-minus-circle' onclick='borrar_elemento(this);'></i></div>");				
 			document.getElementById("resp").focus();		
 		});
 
@@ -95,7 +95,7 @@
 				$(".bloque_pregunta").removeClass("activo");
 			var element = $($(this));
 			//$(".modal-body").append("sadasdasdasd");
-			$(".modal-body").append("<div class='bloque_pregunta activo'><hr/><i class='borrar fa fa-minus-circle' onclick='borrar_elemento(this);'></i><span>Pregunta</span><input type='text' placeholder='pregunta' class='form-control preguntaF'><br><br><div class='respuesta'><span>Respuestas:</span><br></div><br><input type='hidden' name='hidden'></div>");
+			$(".modal-body").append("<div class='bloque_pregunta activo'><hr/><i class='borrar fa fa-minus-circle' onclick='borrar_elemento(this);'></i><span>Pregunta</span><input type='text' placeholder='pregunta' class='form-control preguntaF'><br><br><div class='respuesta'><span>Respuestas:</span><br></div><br></div>");
 			}			
 		});
 
@@ -104,21 +104,32 @@
 			var json={};
 			var respuestas = {};
 			var json_completo={};
+			var correcto ="";
 			var element = $($(".modal-body").find(".bloque_pregunta"));
 			console.log(element);
 			for(var i=0;i<=(element.length)-1;i++){
 				json = {};
 				respuestas={};
 				var preguntas = $(element[i]).find("input");
+
 				for(var x=0;x<=(preguntas.length)-1;x++){					
 					if(x==0){
-						json["pregunta"]=preguntas[x].value;	
+						json["pregunta"]=preguntas[x].value;							
 					}else{
-						respuestas[x+""]=preguntas[x].value;
+						if($(preguntas[x]).is(":radio")){
+							if($(preguntas[x]).is(':checked')){
+								//alert(preguntas[x+1].value);
+								correcto = preguntas[x+1].value
+							}
+							console.log(preguntas[x]);
+						}else{
+							respuestas[x+""]=preguntas[x].value;
+						}						
 					}									
 				}
 				json_completo[i]=json;
 				json_completo[i]["respuestas"]=respuestas;
+				json_completo[i]["correcto"]=correcto;
 				console.log(json_completo);											
 			}
 
@@ -148,7 +159,7 @@ function borrar_elemento(element){
 }
 
 function radio_selected(e){
-	console.log(e);
+	
 }
 
 </script>
