@@ -1,0 +1,31 @@
+.mas{
+		font-size: 28px;
+    	color: green;
+    	float: left;
+	}
+	.btnAgregar{
+		float: right !important;
+	}
+	hr{
+		border-top: 1px solid #9FB4F0 !important;
+	}
+	.respuesta{
+		width: 276px;
+    	margin-left: 100px;
+    	display: inline-block;
+    	border-top-width: 0px;
+	    border-left-width: 0px;
+	    border-right-width: 0px;
+	    border-bottom-color: black;
+	}
+	.borrar{
+		color: #BF3939;
+    	font-size: 22px;
+    	margin-left: 14px;
+	}
+	.preguntaF{
+		border-top-width: 0px;
+	    border-left-width: 0px;
+	    border-right-width: 0px;
+	    border-bottom-color: black;
+	}
